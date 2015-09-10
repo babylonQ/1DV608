@@ -1,4 +1,7 @@
 <?php
+
+namespace view;
+
 date_default_timezone_set("Europe/Sarajevo");
 class DateTimeView {
 

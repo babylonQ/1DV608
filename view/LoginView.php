@@ -1,5 +1,7 @@
 <?php
 
+namespace view;
+
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -21,7 +23,25 @@ class LoginView {
 	 */
 	public function response() {
 		$message = '';
-		
+		/*if ($this->getRequestUserName() === ''){
+		$message = "Username is missing (nothing entered)";
+		}
+		else {
+			$message = "Password is missing";
+		}
+		*/
+
+		if(isset($_POST[self::$login])) {
+
+			if(empty($_POST[self::$name])){
+				$message = 'Username is missing (empty fields)';
+			}
+				
+			else if(empty($_POST[self::$password])){
+			$message = 'Password is missing';
+			}
+		}
+
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
@@ -54,7 +74,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -70,7 +90,13 @@ class LoginView {
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
-		//RETURN REQUEST VARIABLE: USERNAME
+		if (isset($_POST[self::$name])){
+			$username = $_POST[self::$name];
+		}
+		else {
+			$username = '';
+		}
+		return $username;
 	}
 	
 }
