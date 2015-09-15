@@ -1,6 +1,8 @@
-<?php
+<?php session_start();
 
-namespace view;
+//namespace view;
+
+require_once('./model/Member.php');
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -11,9 +13,15 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
+	private $user;
 
+	private $view;
+  	
 	
-
+	public function __construct() {
+		
+			$this->user = new Member();
+	}
 	/**
 	 * Create HTTP response
 	 *
@@ -22,28 +30,51 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
+
 		$message = '';
-		/*if ($this->getRequestUserName() === ''){
-		$message = "Username is missing (nothing entered)";
-		}
-		else {
-			$message = "Password is missing";
-		}
-		*/
+		if($this->getLogin()) {
 
-		if(isset($_POST[self::$login])) {
-
-			if(empty($_POST[self::$name])){
-				$message = 'Username is missing (empty fields)';
+			if($this->getUsername()){
+				$message = 'Username is missing';
 			}
 				
-			else if(empty($_POST[self::$password])){
-			$message = 'Password is missing';
+			else if($this->getPassword()){
+				$message = 'Password is missing';
 			}
+
+			else if($this->getUsername() && !($this->getPassword())){
+				$message = 'Username is missing';
+			}
+
+			else if(($_POST[self::$name]) == $this->user->getUsername()  && ($_POST[self::$password]) == $this->user->getPassword() ){
+				//$message = 'Awesome. its working';
+				$_SESSION["Logged"] = true;
+				$response = $this->generateLogoutButtonHTML($message);
+			}
+
+			else {
+				$message = 'Wrong name or password';
+			}
+
 		}
 
-		$response = $this->generateLoginFormHTML($message);
-		//$response .= $this->generateLogoutButtonHTML($message);
+		else if($this->getLogout()){
+
+			$_SESSION["Logged"] = false;
+			$message = 'Bye bye!';
+			$response = $this->generateLoginFormHTML($message);
+		}
+
+
+
+		if($_SESSION["Logged"] === true) {
+			$message = 'Welcome';
+			$response = $this->generateLogoutButtonHTML($message);
+		}
+		else {
+			$response = $this->generateLoginFormHTML($message);
+		}
+
 		return $response;
 	}
 
@@ -89,7 +120,7 @@ class LoginView {
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
+	public function getRequestUserName() {
 		if (isset($_POST[self::$name])){
 			$username = $_POST[self::$name];
 		}
@@ -97,6 +128,37 @@ class LoginView {
 			$username = '';
 		}
 		return $username;
+	}
+
+	public function getRequestPassword() {
+		if (isset($_POST[self::$password])){
+			$password = $_POST[self::$password];
+		}
+		else {
+			$password = '';
+		}
+		return $password;
+	}
+
+
+	public function getLogin(){
+
+		return isset($_POST[self::$login]);
+	}
+
+	public function getUsername(){
+
+		return  empty($_POST[self::$name]);
+	}
+
+	public function getPassword(){
+
+		return empty($_POST[self::$password]);
+	}
+
+	public function getLogout(){
+
+		return isset($_POST[self::$logout]);
 	}
 	
 }

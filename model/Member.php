@@ -1,18 +1,11 @@
 <?php
 
-namespace model;
+//namespace model;
 
 class Member {
 
-	private $username;
-	private $password;
-
-		public function __construct($username, $password) {
-
-			$this->username = $username;
-			$this->password = $password;
-
-		}
+	private $username = 'Admin';
+	private $password = 'Password';
 
 		public function getUsername(){
 			return $this->username;
@@ -22,5 +15,16 @@ class Member {
 			return $this->password;
 		}
 
+		public function checkCredentials(){
 
+			if($this->username === 'Admin' && $this->password === 'Password'){
+
+				return true;
+			}
+			else{
+				return false;
+			}
+
+
+		}
 }

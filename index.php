@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 
 
 require_once('controller/Controller.php');
@@ -8,14 +8,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 
-$c = new \controller\Controller();
+$c = new Controller();
 $c->request();
 
 
-//CREATE OBJECTS OF THE VIEWS
-//$v = new \view\LoginView();
-//$dtv = new \view\DateTimeView();
-//$lv = new \view\LayoutView();
-
-
-//$lv->render(false, $v, $dtv);
