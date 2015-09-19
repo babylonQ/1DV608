@@ -13,34 +13,66 @@ class Controller {
 	private $dtv;
 	private $lv;
 	private $user;
+	private $message;
 
 
-		public function __construct() {
+		public function __construct(LoginView $v, DateTimeView $dtv, LayoutView $lv, Member $user) {
 			
-			$this->v = new LoginView();
-			$this->dtv = new DateTimeView();
-			$this->lv = new LayoutView();
-			$this->user = new Member();
+			$this->v = $v;
+			$this->dtv = $dtv;
+			$this->lv = $lv;
+			$this->user = $user;
 		}
 
 
 		public function checkLogin(){
 
-			if($this->v->getRequestUserName() === $this->user->getUsername() && $this->v->getRequestPassword() === $this->user->getPassword()){
-				$_SESSION['Logged'] =true;
+			if($this->v->getUsernameValue() === $this->user->getUsername() && $this->v->getPasswordValue() === $this->user->getPassword()){
+				$_SESSION['Logged'] = true;
 			}
-
 			else{
 				$_SESSION['Logged'] = false;
 			}
-
 		}
 
 		public function request(){
 
-						//var_dump(($_SESSION['Logged']));
-						$this->checkLogin();
-						$this->lv->render(($_SESSION['Logged']), $this->v, $this->dtv);
+					$this->checkLogin();
+					$this->doCases();
 				
+		}
+
+		public function doCases(){
+
+			if($this->v->getLogin()) {
+
+				if($this->v->getUsername()){
+					$this->message = $this->v->getUserErrorMsg();
+				}
+				
+				else if($this->v->getPassword()){
+					$this->message = $this->v->getPassErrorMsg();
+				}
+
+				else if($this->v->getUsername() && !($this->v->getPassword())){
+					
+					$this->message = $this->v->getUserErrorMsg();
+					
+				}
+				else if($this->v->getUsernameValue() == $this->user->getUsername()  && ($this->v->getPasswordValue() == $this->user->getPassword()) ){
+					
+					$this->message = $this->v->getWelcomeMsg();
+				
+				}
+				else {
+					$this->message = $this->v->getUserAndPassErrorMsg();
+				}
+			}
+
+			else if($this->v->getLogout()){
+
+				$this->message = $this->v->getByeMsg();
+			}
+			$this->lv->render(($_SESSION['Logged']), $this->v, $this->dtv, $this->message);
 		}
 }

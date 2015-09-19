@@ -29,49 +29,14 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response() {
-
-		$message = '';
-		if($this->getLogin()) {
-
-			if($this->getUsername()){
-				$message = 'Username is missing';
-			}
-				
-			else if($this->getPassword()){
-				$message = 'Password is missing';
-			}
-
-			else if($this->getUsername() && !($this->getPassword())){
-				$message = 'Username is missing';
-			}
-
-			else if(($_POST[self::$name]) == $this->user->getUsername()  && ($_POST[self::$password]) == $this->user->getPassword() ){
-				//$message = 'Awesome. its working';
-				$_SESSION["Logged"] = true;
-				$response = $this->generateLogoutButtonHTML($message);
-			}
-
-			else {
-				$message = 'Wrong name or password';
-			}
-
-		}
-
-		else if($this->getLogout()){
-
-			$_SESSION["Logged"] = false;
-			$message = 'Bye bye!';
-			$response = $this->generateLoginFormHTML($message);
-		}
-
-
+	public function response($message) {
 
 		if($_SESSION["Logged"] === true) {
-			$message = 'Welcome';
+		//	$message = 'Welcome';
 			$response = $this->generateLogoutButtonHTML($message);
 		}
 		else {
+		//	$message = 'Bye bye!';
 			$response = $this->generateLoginFormHTML($message);
 		}
 
@@ -105,7 +70,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUsernameValue() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -120,30 +85,15 @@ class LoginView {
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	public function getRequestUserName() {
-		if (isset($_POST[self::$name])){
-			$username = $_POST[self::$name];
-		}
-		else {
-			$username = '';
-		}
-		return $username;
-	}
-
-	public function getRequestPassword() {
-		if (isset($_POST[self::$password])){
-			$password = $_POST[self::$password];
-		}
-		else {
-			$password = '';
-		}
-		return $password;
-	}
-
 
 	public function getLogin(){
 
 		return isset($_POST[self::$login]);
+	}
+
+	public function getLogout(){
+
+		return isset($_POST[self::$logout]);
 	}
 
 	public function getUsername(){
@@ -156,9 +106,42 @@ class LoginView {
 		return empty($_POST[self::$password]);
 	}
 
-	public function getLogout(){
+	public function getUsernameValue(){
+		if (isset($_POST[self::$name])){
 
-		return isset($_POST[self::$logout]);
+			return ($_POST[self::$name]);
+		}
+		
+	}
+
+	public function getPasswordValue(){
+
+		if (isset($_POST[self::$password])){
+
+			return ($_POST[self::$password]);
+		}
+	}
+
+	public function getUserErrorMsg(){
+	//	$err = ;
+		return "Username is missing";
+	}
+
+	public function getPassErrorMsg(){
+	//	$err = ;
+		return "Password is missing";
+	}
+
+	public function getUserAndPassErrorMsg(){
+	//	$err = ;
+		return "Wrong name or password";
+	}
+
+	public function getWelcomeMsg(){
+		return "Welcome";
+	}
+	public function getByeMsg(){
+		return "Bye bye!";
 	}
 	
 }
