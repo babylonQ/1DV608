@@ -1,7 +1,5 @@
 <?php
 
-//namespace controller;
-
 //INCLUDE THE FILES NEEDED...
 require_once('./view/LoginView.php');
 require_once('./view/DateTimeView.php');
@@ -15,7 +13,6 @@ class Controller {
 	private $user;
 	private $message;
 
-
 		public function __construct(LoginView $v, DateTimeView $dtv, LayoutView $lv, Member $user) {
 			
 			$this->v = $v;
@@ -24,54 +21,59 @@ class Controller {
 			$this->user = $user;
 		}
 
-
+		//CHECK IF THE USER IS ALREADY LOGGED IN AND BASED ON THAT SHOW/HIDE MESSAGE
 		public function checkLogin(){
 
-			if($this->v->getUsernameValue() === $this->user->getUsername() && $this->v->getPasswordValue() === $this->user->getPassword()){
-				$_SESSION['Logged'] = true;
-			}
+			if($_SESSION['Logged'] == false){
+
+				$this->message = $this->v->getWelcomeMsg();
+					$_SESSION['Logged'] = true;
+				}
 			else{
-				$_SESSION['Logged'] = false;
-			}
+				$this->message = '';
+				}
 		}
 
-		public function request(){
+		//CHECK IF THE USER IS ALREADY LOGGED OUT AND BASED ON THAT SHOW/HIDE MESSAGE
+		public function checkLogout(){
 
-					$this->checkLogin();
-					$this->doCases();
-				
+			if($_SESSION['Logged'] == true){
+				$this->message = $this->v->getByeMsg();
+				$_SESSION['Logged'] = false;
+			}
+			else {
+				$this->message = '';
+			}
 		}
 
 		public function doCases(){
 
+			//CHECK IF USER PRESSED LOGIN AND ALL THE DIFFERENT SCENARIOS
 			if($this->v->getLogin()) {
 
-				if($this->v->getUsername()){
+				if($this->v->getIsUsernameEntered()){
+					
 					$this->message = $this->v->getUserErrorMsg();
 				}
-				
-				else if($this->v->getPassword()){
+				else if($this->v->getIsPasswordEntered()){
+					
 					$this->message = $this->v->getPassErrorMsg();
 				}
-
-				else if($this->v->getUsername() && !($this->v->getPassword())){
+				else if($this->v->getIsUsernameEntered() && !($this->v->getIsPasswordEntered())){
 					
-					$this->message = $this->v->getUserErrorMsg();
-					
+					$this->message = $this->v->getUserErrorMsg();	
 				}
 				else if($this->v->getUsernameValue() == $this->user->getUsername()  && ($this->v->getPasswordValue() == $this->user->getPassword()) ){
 					
-					$this->message = $this->v->getWelcomeMsg();
-				
+					$this->checkLogin();	
 				}
 				else {
 					$this->message = $this->v->getUserAndPassErrorMsg();
 				}
 			}
-
 			else if($this->v->getLogout()){
 
-				$this->message = $this->v->getByeMsg();
+				$this->checkLogout();
 			}
 			$this->lv->render(($_SESSION['Logged']), $this->v, $this->dtv, $this->message);
 		}

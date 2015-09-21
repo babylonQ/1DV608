@@ -1,6 +1,4 @@
-<?php session_start();
-
-//namespace view;
+<?php 
 
 require_once('./model/Member.php');
 
@@ -13,15 +11,7 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
-	private $user;
-
-	private $view;
-  	
 	
-	public function __construct() {
-		
-			$this->user = new Member();
-	}
 	/**
 	 * Create HTTP response
 	 *
@@ -32,11 +22,11 @@ class LoginView {
 	public function response($message) {
 
 		if($_SESSION["Logged"] === true) {
-		//	$message = 'Welcome';
+
 			$response = $this->generateLogoutButtonHTML($message);
 		}
 		else {
-		//	$message = 'Bye bye!';
+
 			$response = $this->generateLoginFormHTML($message);
 		}
 
@@ -96,12 +86,12 @@ class LoginView {
 		return isset($_POST[self::$logout]);
 	}
 
-	public function getUsername(){
+	public function getIsUsernameEntered(){
 
 		return  empty($_POST[self::$name]);
 	}
 
-	public function getPassword(){
+	public function getIsPasswordEntered(){
 
 		return empty($_POST[self::$password]);
 	}
@@ -111,7 +101,6 @@ class LoginView {
 
 			return ($_POST[self::$name]);
 		}
-		
 	}
 
 	public function getPasswordValue(){
@@ -123,17 +112,14 @@ class LoginView {
 	}
 
 	public function getUserErrorMsg(){
-	//	$err = ;
 		return "Username is missing";
 	}
 
 	public function getPassErrorMsg(){
-	//	$err = ;
 		return "Password is missing";
 	}
 
 	public function getUserAndPassErrorMsg(){
-	//	$err = ;
 		return "Wrong name or password";
 	}
 

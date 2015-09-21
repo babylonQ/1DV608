@@ -1,7 +1,5 @@
 <?php
 
-//namespace model;
-
 class Member {
 
 	private $username = 'Admin';
@@ -24,7 +22,6 @@ class Member {
 			else{
 				return false;
 			}
-
 
 		}
 }
