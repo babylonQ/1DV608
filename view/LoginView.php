@@ -1,7 +1,5 @@
 <?php 
 
-require_once('./model/Member.php');
-
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -73,8 +71,7 @@ class LoginView {
 			</form>
 		';
 	}
-	
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+
 
 	public function getLogin(){
 

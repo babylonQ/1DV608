@@ -1,6 +1,6 @@
 <?php
 
-class Member {
+class User {
 
 	private $username = 'Admin';
 	private $password = 'Password';

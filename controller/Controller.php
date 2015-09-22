@@ -13,7 +13,7 @@ class Controller {
 	private $user;
 	private $message;
 
-		public function __construct(LoginView $v, DateTimeView $dtv, LayoutView $lv, Member $user) {
+		public function __construct(LoginView $v, DateTimeView $dtv, LayoutView $lv, User $user) {
 			
 			$this->v = $v;
 			$this->dtv = $dtv;
@@ -22,7 +22,7 @@ class Controller {
 		}
 
 		//CHECK IF THE USER IS ALREADY LOGGED IN AND BASED ON THAT SHOW/HIDE MESSAGE
-		public function checkLogin(){
+		private function checkLogin(){
 
 			if($_SESSION['Logged'] == false){
 
@@ -35,7 +35,7 @@ class Controller {
 		}
 
 		//CHECK IF THE USER IS ALREADY LOGGED OUT AND BASED ON THAT SHOW/HIDE MESSAGE
-		public function checkLogout(){
+		private function checkLogout(){
 
 			if($_SESSION['Logged'] == true){
 				$this->message = $this->v->getByeMsg();
@@ -71,10 +71,20 @@ class Controller {
 					$this->message = $this->v->getUserAndPassErrorMsg();
 				}
 			}
+
+			//CHECK IF USER PRESSED LOGOUT
 			else if($this->v->getLogout()){
 
 				$this->checkLogout();
 			}
+			//RENDER PAGE DEPENDING ON SESSION STATUS
 			$this->lv->render(($_SESSION['Logged']), $this->v, $this->dtv, $this->message);
+		}
+
+		public function defaultSession(){
+
+			if(!isset($_SESSION['Logged'])){
+			$_SESSION['Logged'] = false;
+			}
 		}
 }
