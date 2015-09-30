@@ -5,20 +5,22 @@ require_once('./view/LoginView.php');
 require_once('./view/DateTimeView.php');
 require_once('./view/LayoutView.php');
 
-class Controller {
+class LoginController {
 
 	private $v;
 	private $dtv;
 	private $lv;
 	private $user;
 	private $message;
+	private $rv;
 
-		public function __construct(LoginView $v, DateTimeView $dtv, LayoutView $lv, User $user) {
+		public function __construct() {
 			
-			$this->v = $v;
-			$this->dtv = $dtv;
-			$this->lv = $lv;
-			$this->user = $user;
+			$this->v = new LoginView();
+			$this->dtv = new DateTimeView();
+			$this->lv = new LayoutView();
+			$this->user = new User();
+			$this->rv = new RegisterView();
 		}
 
 		//CHECK IF THE USER IS ALREADY LOGGED IN AND BASED ON THAT SHOW/HIDE MESSAGE
@@ -78,7 +80,11 @@ class Controller {
 				$this->checkLogout();
 			}
 			//RENDER PAGE DEPENDING ON SESSION STATUS
-			$this->lv->render(($_SESSION['Logged']), $this->v, $this->dtv, $this->message);
+
+			
+			$this->lv->renderLogin(($_SESSION['Logged']), $this->v, $this->dtv, $this->rv, $this->message);
+			
+			
 		}
 
 		public function defaultSession(){
@@ -87,4 +93,6 @@ class Controller {
 			$_SESSION['Logged'] = false;
 			}
 		}
+
+		
 }

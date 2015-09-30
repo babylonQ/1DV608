@@ -18,16 +18,12 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response($message) {
-
 		if($_SESSION["Logged"] === true) {
-
 			$response = $this->generateLogoutButtonHTML($message);
 		}
 		else {
-
 			$response = $this->generateLoginFormHTML($message);
 		}
-
 		return $response;
 	}
 
