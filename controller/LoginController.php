@@ -48,7 +48,7 @@ class LoginController {
 			}
 		}
 
-		public function doCases(){
+		public function doLoginCases(){
 
 			//CHECK IF USER PRESSED LOGIN AND ALL THE DIFFERENT SCENARIOS
 			if($this->v->getLogin()) {
@@ -82,8 +82,7 @@ class LoginController {
 			//RENDER PAGE DEPENDING ON SESSION STATUS
 
 			
-			$this->lv->renderLogin(($_SESSION['Logged']), $this->v, $this->dtv, $this->rv, $this->message);
-			
+			$this->callRenderLogin($this->message);
 			
 		}
 
@@ -92,6 +91,10 @@ class LoginController {
 			if(!isset($_SESSION['Logged'])){
 			$_SESSION['Logged'] = false;
 			}
+		}
+
+		public function callRenderLogin($message){
+			$this->lv->renderLogin(($_SESSION['Logged']), $this->v, $this->dtv, $this->rv, $message);
 		}
 
 		

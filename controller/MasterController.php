@@ -19,7 +19,7 @@ class MasterController{
 			$this->rc->doRegisterCases();
 		}
 		else{
-			$this->lc->doCases();
+			$this->lc->doLoginCases();
 		}
 		
 	}

@@ -25,7 +25,7 @@ class LayoutView {
     ';
   }
 
-  public function renderRegister($isLoggedIn, DateTimeView $dtv, RegisterView $rv) {
+  public function renderRegister($isLoggedIn, DateTimeView $dtv, RegisterView $rv, $message) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -38,7 +38,7 @@ class LayoutView {
           
           <h2>Register new user</h2>
           <div class="container">
-              ' . $rv->generateRegisterFormHTML() . '
+              ' . $rv->responseRegister($message) . '
               
               ' . $dtv->show() . '
           </div>
@@ -61,9 +61,7 @@ class LayoutView {
     
     if($isLoggedIn == false){
       return $rv->renderLink();
-
     }
-
     else if ($isLoggedIn == true){
       return '';
 
