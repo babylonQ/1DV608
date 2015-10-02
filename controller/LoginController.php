@@ -92,7 +92,6 @@ class LoginController {
 			$_SESSION['Logged'] = false;
 			}
 		}
-
 		public function callRenderLogin($message){
 			$this->lv->renderLogin(($_SESSION['Logged']), $this->v, $this->dtv, $this->rv, $message);
 		}

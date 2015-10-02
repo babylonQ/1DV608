@@ -6,10 +6,6 @@ class RegisterView {
 	private static $username = 'RegisterView::UserName';
 	private static $password = 'RegisterView::Password';
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
-	
-	private static $cookieName = 'RegisterView::CookieName';
-	private static $cookiePassword = 'RegisterView::CookiePassword';
-	private static $keep = 'RegisterView::KeepMeLoggedIn';
 	private static $messageId = 'RegisterView::Message';
 
 
@@ -120,8 +116,8 @@ class RegisterView {
 	public function getSuccessfulRegisterMsg(){
 		return "Registered new user.";
 	}
-	public function getByeMsg(){
-		return "Bye bye!";
+	public function getUserExistsMsg(){
+		return "User exists, pick another username.";
 	}
 
 }
