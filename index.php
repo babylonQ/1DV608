@@ -7,7 +7,10 @@ require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('view/RegisterView.php');
+require_once('view/NavigationView.php');
 require_once('model/User.php');
+require_once('model/SessionModel.php');
+
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
@@ -18,7 +21,22 @@ ini_set('display_errors', 'On');
 //$lc->defaultSession();
 //$lc->doCases();
 
+$v = new LoginView();
+$dtv = new DateTimeView();
+$rv = new RegisterView();
+$lv = new LayoutView();
+//$user = new User();
+$nv = new NavigationView();
+$s = new SessionModel();
+
 $mc = new MasterController();
-$mc->defaultSession();
+//$mc->defaultSession();
 $mc->start();
 
+if($nv->registerLinkPressed()){
+		$lv->renderRegister($s->isLoggedIn(), $dtv, $rv, $nv);
+	}
+else{
+		$lv->renderLogin($s->isLoggedIn(), $v, $dtv, $nv);
+	}
+	

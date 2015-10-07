@@ -4,6 +4,9 @@ class User {
 
 	private $username = 'Admin';
 	private $password = 'Password';
+	private $v;
+
+	
 
 		public function getUsername(){
 			return $this->username;
@@ -15,7 +18,7 @@ class User {
 
 		public function checkCredentials(){
 
-			if($this->username === 'Admin' && $this->password === 'Password'){
+			if($this->getUsername() === 'Admin' && $this->getPassword() === 'Password'){
 
 				return true;
 			}
@@ -24,4 +27,8 @@ class User {
 			}
 
 		}
+
+		
+
+
 }

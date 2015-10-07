@@ -4,7 +4,7 @@ class LayoutView {
 
   
   
-  public function renderLogin($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $rv, $message) {
+  public function renderLogin($isLoggedIn, LoginView $v, DateTimeView $dtv, NavigationView $nv) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -13,10 +13,10 @@ class LayoutView {
         </head>
         <body>
           <h1>Assignment 4</h1>
-          ' . $this->checkSessionS($isLoggedIn, $rv) . $this->renderIsLoggedIn($isLoggedIn) . '
+          ' . $this->checkSessionS($isLoggedIn, $nv) . $this->renderIsLoggedIn($isLoggedIn) . '
           
           <div class="container">
-              ' . $v->response($message) . '
+              ' . $v->response() . '
               
               ' . $dtv->show() . '
           </div>
@@ -25,7 +25,7 @@ class LayoutView {
     ';
   }
 
-  public function renderRegister($isLoggedIn, DateTimeView $dtv, RegisterView $rv, $message) {
+  public function renderRegister($isLoggedIn, DateTimeView $dtv, RegisterView $rv, NavigationView $nv) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -34,11 +34,11 @@ class LayoutView {
         </head>
         <body>
           <h1>Assignment 4</h1>
-          ' . $rv->renderLink() . $this->renderIsLoggedIn($isLoggedIn) . '
+          ' . $nv->renderLink() . $this->renderIsLoggedIn($isLoggedIn) . '
           
           <h2>Register new user</h2>
           <div class="container">
-              ' . $rv->responseRegister($message) . '
+              ' . $rv->responseRegister() . '
               
               ' . $dtv->show() . '
           </div>
@@ -57,10 +57,10 @@ class LayoutView {
     }
   }
 
-  private function checkSessionS($isLoggedIn, RegisterView $rv) {
+  private function checkSessionS($isLoggedIn, NavigationView $nv) {
     
     if($isLoggedIn == false){
-      return $rv->renderLink();
+      return $nv->renderLink();
     }
     else if ($isLoggedIn == true){
       return '';

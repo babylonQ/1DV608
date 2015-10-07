@@ -13,6 +13,7 @@ class LoginController {
 	private $user;
 	private $message;
 	private $rv;
+	private $s;
 
 		public function __construct() {
 			
@@ -21,56 +22,70 @@ class LoginController {
 			$this->lv = new LayoutView();
 			$this->user = new User();
 			$this->rv = new RegisterView();
+			$this->s = new SessionModel();
 		}
 
 		//CHECK IF THE USER IS ALREADY LOGGED IN AND BASED ON THAT SHOW/HIDE MESSAGE
 		private function checkLogin(){
 
-			if($_SESSION['Logged'] == false){
+			if($this->s->isLoggedIn() == false){
 
-				$this->message = $this->v->getWelcomeMsg();
-					$_SESSION['Logged'] = true;
+				$this->v->setWelcomeMsg();
+					$this->s->setLoggedIn();
 				}
 			else{
-				$this->message = '';
+				$this->v->setClearMsg();
 				}
 		}
 
 		//CHECK IF THE USER IS ALREADY LOGGED OUT AND BASED ON THAT SHOW/HIDE MESSAGE
 		private function checkLogout(){
 
-			if($_SESSION['Logged'] == true){
-				$this->message = $this->v->getByeMsg();
-				$_SESSION['Logged'] = false;
+			if($this->s->isLoggedIn() == true){
+				$this->v->setByeMsg();
+				$this->s->setLoggedOut();
 			}
 			else {
-				$this->message = '';
+				$this->v->setClearMsg();
 			}
 		}
 
 		public function doLoginCases(){
+
+			if($this->s->isUserRegistered()){
+				$this->v->setSuccessfulRegisterMsg();
+				$this->s->unsetRegistered();
+
+			}
+
+			if($this->s->isUserSet()){
+				$this->v->setUsername($this->s->getUserValue());
+				$this->s->unsetUser();
+
+			}
 
 			//CHECK IF USER PRESSED LOGIN AND ALL THE DIFFERENT SCENARIOS
 			if($this->v->getLogin()) {
 
 				if($this->v->getIsUsernameEntered()){
 					
-					$this->message = $this->v->getUserErrorMsg();
+					$this->v->setUserErrorMsg();
 				}
 				else if($this->v->getIsPasswordEntered()){
-					
-					$this->message = $this->v->getPassErrorMsg();
+					$this->v->setUsername($this->v->getUsernameValue());
+					$this->v->setPassErrorMsg();
 				}
 				else if($this->v->getIsUsernameEntered() && !($this->v->getIsPasswordEntered())){
 					
-					$this->message = $this->v->getUserErrorMsg();	
+					$this->v->setUserErrorMsg();	
 				}
 				else if($this->v->getUsernameValue() == $this->user->getUsername()  && ($this->v->getPasswordValue() == $this->user->getPassword()) ){
 					
 					$this->checkLogin();	
 				}
 				else {
-					$this->message = $this->v->getUserAndPassErrorMsg();
+					$this->v->setUsername($this->v->getUsernameValue());
+					$this->v->setUserAndPassErrorMsg();
 				}
 			}
 
@@ -79,11 +94,6 @@ class LoginController {
 
 				$this->checkLogout();
 			}
-			//RENDER PAGE DEPENDING ON SESSION STATUS
-
-			
-			$this->callRenderLogin($this->message);
-			
 		}
 
 		public function defaultSession(){
@@ -92,9 +102,7 @@ class LoginController {
 			$_SESSION['Logged'] = false;
 			}
 		}
-		public function callRenderLogin($message){
-			$this->lv->renderLogin(($_SESSION['Logged']), $this->v, $this->dtv, $this->rv, $message);
-		}
+		
 
 		
 }

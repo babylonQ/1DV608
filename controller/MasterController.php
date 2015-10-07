@@ -2,20 +2,19 @@
 
 class MasterController{
 
-	private $user;
+	
 	private $rv;
 	private $lc;
 	private $rc;
 
 	public function __construct() {
-			
-			$this->rv = new RegisterView();
 			$this->lc = new LoginController();
 			$this->rc = new RegisterController();
+			$this->nv = new NavigationView();
 		}
 
 	public function start(){
-		if(($this->rv->registerLinkPressed())){
+		if(($this->nv->registerLinkPressed())){
 			$this->rc->doRegisterCases();
 		}
 		else{
@@ -24,10 +23,5 @@ class MasterController{
 		
 	}
 
-	public function defaultSession(){
-
-			if(!isset($_SESSION['Logged'])){
-			$_SESSION['Logged'] = false;
-			}
-		}
+	
 }

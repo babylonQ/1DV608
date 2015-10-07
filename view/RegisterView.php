@@ -8,27 +8,22 @@ class RegisterView {
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
 	private static $messageId = 'RegisterView::Message';
 
+	private static $message = '';
 
-	private static $registerLink = "register";
-	private static $backLink = '';
-	public $usernameMinChars = 3;
-	public $passwordMinChars = 6;
-
-	public function responseRegister($message) {
+	public function responseRegister() {
 		
-		$response = $this->generateRegisterFormHTML($message);
+		$response = $this->generateRegisterFormHTML(self::$message);
 		
 		return $response;
 	}
 
 	public function generateRegisterFormHTML($message) {
-		//$message = '';
 
 		return '
 			<form method="post" > 
 				<fieldset>
 					<legend>Register a new user - Write username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
+					<p id="' . self::$messageId . '">' . self::$message . '</p>
 					
 					<label for="' . self::$username . '">Username :</label>
 					<input type="text" id="' . self::$username . '" name="' . self::$username . '" value="' . (strip_tags($this->getRegisterUsername())) . '" />
@@ -44,28 +39,6 @@ class RegisterView {
 			</form>
 		';
 	}
-
-	 public function renderRegisterLink() {
-      return "<a href='?" . self::$registerLink . "'>Register a new user</a>";
- 	 }
-
- 	 public function renderBackLink() {
-      return "<a href='?" . self::$backLink . "'>Back to login</a>";
- 	 }
-
-
- 	 public function renderLink() {
- 	 	if($this->registerLinkPressed() == false){
- 	 		return $this->renderRegisterLink();
- 	 	}
- 	 	else{
- 	 		return $this->renderBackLink();
- 	 	}
- 	 }
- 	 
- 	 public function registerLinkPressed() {	
-    	return isset($_GET[self::$registerLink]);
-  	}
 
   	public function getRegister(){
 		return isset($_POST[self::$register]);
@@ -97,27 +70,31 @@ class RegisterView {
 		return empty($_POST[self::$password]);
 	}
 
-	public function getUserRegisterErrorMsg(){
-		return "Username has too few characters, at least 3 characters.";
+	public function setUserRegisterErrorMsg(){
+		self::$message = "Username has too few characters, at least 3 characters.<br />";
 	}
 
-	public function getPassRegisterErrorMsg(){
-		return "Password has too few characters, at least 6 characters.";
+	public function setPassRegisterErrorMsg(){
+		self::$message = "Password has too few characters, at least 6 characters.";
 	}
 
-	public function getPasswordsNotMatchMsg(){
-		return "Passwords do not match.";
+	public function setPasswordsNotMatchMsg(){
+		self::$message = "Passwords do not match.";
 	}
 
-	public function getInvalidCharsMsg(){
-		return "Username contains invalid characters.";
+	public function setInvalidCharsMsg(){
+		self::$message = "Username contains invalid characters.";
 	}
 
-	public function getSuccessfulRegisterMsg(){
-		return "Registered new user.";
+	
+	public function setUserExistsMsg(){
+		self::$message = "User exists, pick another username.";
 	}
-	public function getUserExistsMsg(){
-		return "User exists, pick another username.";
+
+	public function setUserAndPassRegisterErrorMsg(){
+		self::$message = "Username has too few characters, at least 3 characters.<br />Password has too few characters, at least 6 characters.";
 	}
+
+	
 
 }

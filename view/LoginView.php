@@ -10,6 +10,9 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 	
+	private static $message ='';
+	private static $user = '';
+	
 	/**
 	 * Create HTTP response
 	 *
@@ -17,12 +20,12 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($message) {
+	public function response() {
 		if($_SESSION["Logged"] === true) {
-			$response = $this->generateLogoutButtonHTML($message);
+			$response = $this->generateLogoutButtonHTML(self::$message);
 		}
 		else {
-			$response = $this->generateLoginFormHTML($message);
+			$response = $this->generateLoginFormHTML(self::$message);
 		}
 		return $response;
 	}
@@ -54,7 +57,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUsernameValue() . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . self::$user . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -90,10 +93,9 @@ class LoginView {
 	}
 
 	public function getUsernameValue(){
-		if (isset($_POST[self::$name])){
+		if (isset($_POST[self::$name]))
 
 			return ($_POST[self::$name]);
-		}
 	}
 
 	public function getPasswordValue(){
@@ -104,23 +106,34 @@ class LoginView {
 		}
 	}
 
-	public function getUserErrorMsg(){
-		return "Username is missing";
+	public function setUsername($usern){
+		self::$user = $usern;
+		
 	}
 
-	public function getPassErrorMsg(){
-		return "Password is missing";
+	public function setUserErrorMsg(){
+		self::$message = "Username is missing";
 	}
 
-	public function getUserAndPassErrorMsg(){
-		return "Wrong name or password";
+	public function setPassErrorMsg(){
+		self::$message = "Password is missing";
 	}
 
-	public function getWelcomeMsg(){
-		return "Welcome";
+	public function setUserAndPassErrorMsg(){
+		self::$message = "Wrong name or password";
 	}
-	public function getByeMsg(){
-		return "Bye bye!";
+
+	public function setWelcomeMsg(){
+		self::$message = "Welcome";
+	}
+	public function setByeMsg(){
+		self::$message = "Bye bye!";
+	}
+	public function setClearMsg(){
+		self::$message = "";
+	}
+	public function setSuccessfulRegisterMsg(){
+		self::$message = "Registered new user.";
 	}
 	
 }
