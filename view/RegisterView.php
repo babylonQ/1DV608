@@ -13,7 +13,6 @@ class RegisterView {
 	public function responseRegister() {
 		
 		$response = $this->generateRegisterFormHTML(self::$message);
-		
 		return $response;
 	}
 
@@ -39,6 +38,8 @@ class RegisterView {
 			</form>
 		';
 	}
+
+	//setters and getters for different conditions
 
   	public function getRegister(){
 		return isset($_POST[self::$register]);
@@ -94,7 +95,5 @@ class RegisterView {
 	public function setUserAndPassRegisterErrorMsg(){
 		self::$message = "Username has too few characters, at least 3 characters.<br />Password has too few characters, at least 6 characters.";
 	}
-
-	
 
 }

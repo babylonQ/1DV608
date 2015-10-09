@@ -2,7 +2,6 @@
 
 class NavigationView {
 
-
 	private static $registerLink = "register";
 	private static $backLink = '';
 
@@ -20,15 +19,14 @@ class NavigationView {
   	}
 
 	 public function renderRegisterLink() {
-      return "<a href='?" . self::$registerLink . "'>Register a new user</a>";
- 	 }
+      	return "<a href='?" . self::$registerLink . "'>Register a new user</a>";
+ 	}
 
  	 public function renderBackLink() {
       return "<a href='?" . self::$backLink . "'>Back to login</a>";
  	 }
 
  	 public function backToIndex(){
-
 		header('Location:/?');
 	}
 

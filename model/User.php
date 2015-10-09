@@ -2,33 +2,19 @@
 
 class User {
 
-	private $username = 'Admin';
-	private $password = 'Password';
-	private $v;
-
+	private $username;
+	private $password;
 	
+	public function __construct($username, $password){
+		$this->username = $username;
+		$this->password = $password;
+	}
 
-		public function getUsername(){
-			return $this->username;
-		}
+	public function getUsername(){
+		return $this->username;
+	}
 
-		public function getPassword(){
-			return $this->password;
-		}
-
-		public function checkCredentials(){
-
-			if($this->getUsername() === 'Admin' && $this->getPassword() === 'Password'){
-
-				return true;
-			}
-			else{
-				return false;
-			}
-
-		}
-
-		
-
-
+	public function getPassword(){
+		return $this->password;
+	}
 }

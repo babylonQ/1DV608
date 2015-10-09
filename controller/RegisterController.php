@@ -2,26 +2,19 @@
 
 class RegisterController {
 
-	private $dtv;
 	private $rv;
-	private $lv;
-	private $message;
-	private $user;
-	private $l;
 	private $nv;
+	private $udal;
 
-	public function __construct() {
+	public function __construct(UserDAL $udal) {
 			
-		//$this->dtv = new DateTimeView();
 		$this->rv = new RegisterView();
-		//$this->lv = new LayoutView();
-		//$this->lc = new LoginController();
-		$this->user = new User();
-		$this->l = new LoginView();
 		$this->s = new SessionModel();
 		$this->nv = new NavigationView();
+		$this->udal = $udal;
 	}
 
+	//checks the different conditions and sets the messages which then RegisterView shows 
 	public function doRegisterCases(){
 	
 		if($this->rv->getRegister()) {
@@ -41,12 +34,16 @@ class RegisterController {
 			else if ($this->rv->getRegisterUsername() !== strip_tags($this->rv->getRegisterUsername())) {
       			$this->rv->setInvalidCharsMsg();
 				}
-			else if($this->rv->getRegisterUsername() === $this->user->getUsername()){
+			else if($this->udal->getUsers()->userExists($this->rv->getRegisterUsername())){
 				$this->rv->setUserExistsMsg();
 				}
 		else {
+				//set Register session
 				$this->s->setRegistered();
+				//set User session
 				$this->s->setUser($this->rv->getRegisterUsername());
+				//adds user to UserDAL
+				$this->udal->add(new User($this->rv->getRegisterUsername(), $this->rv->getRegisterPassword()));
 				$this->nv->backToIndex();
 			}
 		}	

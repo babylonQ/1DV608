@@ -2,8 +2,6 @@
 
 class LayoutView {
 
-  
-  
   public function renderLogin($isLoggedIn, LoginView $v, DateTimeView $dtv, NavigationView $nv) {
     echo '<!DOCTYPE html>
       <html>
@@ -67,9 +65,6 @@ class LayoutView {
 
       }
   }
-
-  
-  
 
 }
 
