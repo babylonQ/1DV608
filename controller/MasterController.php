@@ -12,7 +12,7 @@ class MasterController{
 	public function __construct(){
 
 		$this->nv = new NavigationView();
-		$this->mysqli = new mysqli("mysql8.000webhost.com", "a9523293_mirza", "m12345", "a9523293_mirza");
+		$this->mysqli = new mysqli("mysqlurl", "user", "pass", "user");
 		if (mysqli_connect_errno()) {
 	   		printf("Connect failed: %s\n", mysqli_connect_error());
 	   		exit();
